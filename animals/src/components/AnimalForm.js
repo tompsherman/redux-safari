@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axiosWithAuth from "../utils/axiosWithAuth"
 
 const initialAnimal = {
     name: '',
@@ -6,9 +7,9 @@ const initialAnimal = {
     classification: { species:'' }
 }
 
-export default function AnimalForm({animals, updateAnimals }) {
+export default function AnimalForm({animals, updateAnimals, updating, setUpdating }) {
 
-    const [ updating, setUpdating ] = useState(false);
+    // const [ updating, setUpdating ] = useState(false);
     const [animalToUpdate, setAnimalToUpdate] = useState(initialAnimal);
 
     const editAnimal = animal => {
@@ -21,10 +22,22 @@ export default function AnimalForm({animals, updateAnimals }) {
         // How can we update the animal information?
         // Where can we get the ID? 
         // Where is the information stored?
+        axiosWithAuth()
+        .put(`/api/animals/${animalToUpdate.id}`, animalToUpdate)
+        .then(response => console.log(response.data), setUpdating(false))
+        .catch(err => console.log(err))
     }
 
     const deleteAnimal = animal => {
         // How can we delete an animal?
+        axiosWithAuth()
+        .delete(`/api/animals/${animalToUpdate.id}`)
+        .then(response => {
+            console.log(response);
+            updateAnimals(animals.filter(item => item.id !== animal.id))
+            setUpdating(false)
+            })
+        .catch(error => console.log(error))
     }
 
     return (

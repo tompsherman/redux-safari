@@ -15,7 +15,8 @@ const Login = (props) => {
         axiosWithAuth()
         .post('/api/login', login)
         .then((response) => {
-                localStorage.setItem('token', response.data.payload); props.history.push('/creatures')
+                localStorage.setItem('token', response.data.payload); 
+                props.history.push('/creatures')
             })
         .catch(error => console.log(error))
     }
