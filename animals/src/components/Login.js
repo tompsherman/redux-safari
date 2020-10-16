@@ -12,10 +12,16 @@ const Login = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        axiosWithAuth()
+        .post('/api/login', login)
+        .then((response) => {
+                localStorage.setItem('token', response.data.payload); props.history.push('/creatures')
+            })
+        .catch(error => console.log(error))
     }
 
     const handleChange = (event) => {
-        
+        setLogin({...login, [event.target.name]: event.target.value})
     }
 
 
